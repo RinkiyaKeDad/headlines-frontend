@@ -5,7 +5,8 @@ import './App.css';
 const App = () => {
   const [loadedHeadlines, setLoadedHeadlines] = useState([]);
   const [displayedHeadlines, setDisplayedHeadlines] = useState();
-  const [curPage, setCurPage] = useState(2);
+  const [curPage, setCurPage] = useState(1);
+  const [array, setArray] = useState([]);
 
   useEffect(() => {
     const fetchHeadlines = async () => {
@@ -22,10 +23,15 @@ const App = () => {
     fetchHeadlines();
   }, []);
 
+  let a = [];
+
   useEffect(() => {
     setDisplayedHeadlines(
       loadedHeadlines.slice((curPage - 1) * 10, curPage * 10)
     );
+    for (let i = 1; i < loadedHeadlines.length / 10; i++) a.push(i);
+    setArray(a);
+    //console.log(a);
   }, [loadedHeadlines, curPage]);
 
   return (
@@ -37,24 +43,14 @@ const App = () => {
             <li class='list-group-item'>{headline}</li>
           ))}
       </ul>
-      <ul className='pagination'>
-        <li>
-          <a href='#'>1</a>
-        </li>
-        <li>
-          <a href='#' className='btn '>
-            2
-          </a>
-        </li>
-        <li>
-          <a href='#'>3</a>
-        </li>
-        <li>
-          <a href='#'>4</a>
-        </li>
-        <li>
-          <a href='#'>5</a>
-        </li>
+      <ul class='pagination'>
+        {array.map(num => (
+          <li class='page-item'>
+            <a class='page-link' href='#' onClick={() => setCurPage(num)}>
+              {num}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   );
